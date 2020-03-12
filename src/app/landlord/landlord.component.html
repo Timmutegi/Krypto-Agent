@@ -1,0 +1,178 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Landlord</a>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card" id="leftcard">
+                <div class="card-body">
+                    <h5 *ngIf="!toggle" class="card-title">New Landlord</h5>
+                    <h5 *ngIf="toggle" class="card-title">Update Landlord</h5>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-user"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="message != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <form [formGroup]="landlordForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" formControlName="fullname" class="form-control" [ngClass]="{'is-invalid': submitted && f.fullname.errors }" placeholder="Full Name">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Full name is required</div>
+                                </div>
+                            </div>
+                            <div *ngIf="!toggle" class="form-group col-md-6">
+                                <input type="text" formControlName="username" class="form-control" id="username" [ngClass]="{'is-invalid': submitted && f.username.errors }" placeholder="Username">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Username is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div *ngIf="!toggle" class="form-group col-md-6">
+                                <input type="number" formControlName="national" class="form-control" [ngClass]="{'is-invalid': submitted && f.national.errors }" placeholder="National ID NO">
+                                <div *ngIf="submitted && f.national.errors" class="invalid-feedback">
+                                    <div *ngIf="f.national.errors.required">National ID is required</div>
+                                    <div *ngIf="f.national.errors.pattern">Enter a valid ID number</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': submitted && f.email.errors }" placeholder="Email Address">
+                                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                    <div *ngIf="f.email.errors.required">Email is required</div>
+                                    <div *ngIf="f.email.errors.pattern">Enter a valid email</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                            <div class="form-group col-md-6">
+                                <input type="number" formControlName="primaryPhone" class="form-control" [ngClass]="{'is-invalid': submitted && f.primaryPhone.errors }" placeholder="Primary Phone Number">
+                                <div *ngIf="submitted && f.primaryPhone.errors" class="invalid-feedback">
+                                    <div *ngIf="f.primaryPhone.errors.required">Primary phone number is required</div>
+                                    <div *ngIf="f.primaryPhone.errors.pattern">Enter a valid phone number</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" formControlName="secondaryPhone" class="form-control" placeholder="Secondary Phone Number">
+                            </div>
+                        </div>
+                        <div *ngIf="!toggle" class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="passportPhoto">Passport Photo</label>
+                                <input type="file" formControlName="photo" class="form-control" (change)="choosePhoto(photo.files)" #photo id="photo" [ngClass]="{'is-invalid': submitted && f.photo.errors }" placeholder="Profile Picture">
+                                <div *ngIf="submitted && f.photo.errors" class="invalid-feedback">
+                                    <div>Profile Picture is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button *ngIf="!toggle" type="submit" (click)="onSubmit()" class="btn text-white" id="btn1">SAVE</button>
+                        <button *ngIf="toggle" type="submit" (click)="updateLandlord()" class="btn text-white" id="btn1">UPDATE</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" id="right-card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">LOGGED IN AS</h6>
+                    <h5 class="card-title">Robert Kanyoro</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                    </p>
+                    <button type="submit" class="btn text-white" id="btn2">EDIT PROFILE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <img src="{{avatarBlobUrl}}">
+                    <input *ngIf="showInput" type="file" #updatePhoto class="form-control" (change)="choosePhoto(updatePhoto.files)" id="updatePhoto" placeholder="Profile Picture">
+                    <button *ngIf="showInput" type="button" (click)="updateImage(updatedimage)" #updatedimage value={{updateNationalID}} class="btn btn-success btn-sm">SAVE</button>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="!showButton" type="button" class="btn btn-info btn-sm" (click)="chooseImage()">UPDATE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h6 class="card-title">Landlords</h6>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-clipboard fa-lg"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="deleteMessage != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>National ID</th>
+                                <th>Email</th>
+                                <th>Primary Phone Number</th>
+                                <th>Secondary Phone Number</th>
+                                <th>View Photo</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let landlord of landlords">
+                                <td>{{landlord.landlordID}}</td>
+                                <td>{{landlord.username}}</td>
+                                <td>{{landlord.landlordName}}</td>
+                                <td>{{landlord.landlordNationalID}}</td>
+                                <td>{{landlord.landlordEmailAddress}}</td>
+                                <td>{{landlord.landlordPrimaryPhoneNumber}}</td>
+                                <td>{{landlord.landlordSecondaryPhoneNumber}}</td>
+                                <td><button type="button" class="btn btn-info btn-sm" (click)="displayImage(landlord.landlordID, landlord.landlordNationalID)" data-toggle="modal" data-target="#exampleModal">View</button></td>
+                                <td><a (click)="onUpdate(landlord.landlordID)"><i class="fas fa-edit bg-success"></i></a><a (click)="deleteLandlord(landlord.landlordID)"><i class="fas fa-times-circle bg-danger"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

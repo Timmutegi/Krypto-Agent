@@ -1,0 +1,30 @@
+<div class="sidebar">
+    <p class="admin">AC KRYPTO AGENT</p>
+    <hr>
+    <P class="name"><span><i class="fas fa-user"></i></span>Robert Kanyoro</P>
+    <hr>
+    <div class="dashboard" routerLinkActive="active-link">
+        <a class="link" routerLink="/dashboard"><span><i class="fas fa-tachometer-alt"></i></span>DASHBOARD</a>
+    </div>
+    <div class="branches" routerLinkActive="active-link">
+        <a class="link" routerLink="/apartment"><span><i class="fas fa-building"></i></span>APARTMENTS</a>
+    </div>
+    <div class="branches" routerLinkActive="active-link">
+        <a class="link" routerLink="/room"><span><i class="fas fa-building"></i></span>ROOMS</a>
+    </div>
+    <div class="dropdown" routerLinkActive="active-link">
+        <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span><i class="fas fa-user"></i></span> USERS
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" routerLink="/landlord">LANDLORDS</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLink="/caretaker">CARETAKERS</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLink="/tenant">TENANT</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLink="/user">CREATE USER</a>
+        </div>
+    </div>
+</div>

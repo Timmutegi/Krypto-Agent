@@ -1,0 +1,169 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Room</a>
+    </nav>
+
+    <button *ngIf="!toggle" type="submit" routerLink="room-classification" class="btn text-white" id="btn3">Room Classification</button>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card" id="leftcard">
+                <div class="card-body">
+                    <h5 *ngIf="!toggle" class="card-title">New Room</h5>
+                    <h5 *ngIf="toggle" class="card-title">Update Room</h5>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-user"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="message != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <form [formGroup]="roomForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <select formControlName="apartment" (change)="getApartmentID($event.target.value)" class="form-control" [ngClass]="{'is-invalid': submitted && f.apartment.errors }">
+                                    <option value="" selected>Choose Apartment</option>
+                                    <option *ngFor="let apartment of apartments" value="{{apartment.apartmentID}}">{{apartment.apartmentName}}</option>
+                                </select>
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Apartment is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <select formControlName="roomStatus" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomStatus.errors }">
+                                    <option value="" selected>Select status</option>
+                                    <option value="1">Availabe</option>
+                                    <option value="0">Not Available</option>
+                                </select>
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Status is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="number" formControlName="roomFloor" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomFloor.errors }" placeholder="Room floor">
+                                <div *ngIf="submitted && f.roomFloor.errors" class="invalid-feedback">
+                                    <div *ngIf="f.roomFloor.errors.required">Room floor is required</div>
+                                    <div *ngIf="f.roomFloor.errors.pattern">Enter a valid room floor</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" formControlName="roomNumber" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomNumber.errors }" placeholder="Room number">
+                                <div *ngIf="submitted && f.roomNumber.errors" class="invalid-feedback">
+                                    <div *ngIf="f.roomNumber.errors.required">Room Numberis required</div>
+                                    <div *ngIf="f.roomNumber.errors.pattern">Enter a valid room number</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <select formControlName="roomType" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomType.errors }">
+                                    <option value="" selected>Choose Type</option>
+                                    <option value="commercial">Commercial</option>
+                                    <option value="residential">Residential</option>            
+                                </select>
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Room Type is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select formControlName="booked" class="form-control" [ngClass]="{'is-invalid': submitted && f.booked.errors }">
+                                    <option value="" selected>Select State</option>
+                                    <option value="1">Booked</option>
+                                    <option value="0">Not Booked</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select formControlName="roomClassification" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomClassification.errors }">
+                                    <option value="" selected>Choose Classification</option>
+                                    <option *ngFor="let classification of classifications" value="{{classification.roomID}}">{{classification.roomType}} {{classification.roomClass}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button *ngIf="!toggle" type="submit" (click)="onSubmit()" class="btn text-white" id="btn1">SAVE</button>
+                        <button *ngIf="toggle" type="submit" (click)="updateroom()" class="btn text-white" id="btn1">UPDATE</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" id="right-card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">LOGGED IN AS</h6>
+                    <h5 class="card-title">Robert Kanyoro</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                    </p>
+                    <button type="submit" class="btn text-white" id="btn2">EDIT PROFILE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h6 class="card-title">Rooms</h6>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-clipboard fa-lg"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="deleteMessage != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Apartment</th>
+                                <th>Status</th>
+                                <th>Floor</th>
+                                <th>Number</th>
+                                <th>Type</th>
+                                <th>Booked</th>
+                                <th>Classification</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let room of rooms">
+                                <td>{{room.roomID}}</td>
+                                <td>{{room.apartment}}</td>
+                                <td>{{room.roomStatus}}</td>
+                                <td>{{room.roomFloor}}</td>
+                                <td>{{room.roomNumber}}</td>
+                                <td>{{room.roomType}}</td>
+                                <td>{{room.booked}}</td>
+                                <td>{{room.roomClassification}}</td>
+                                <td><a (click)="onUpdate(room.roomID)"><i class="fas fa-edit bg-success"></i></a><a (click)="deleteRoom(room.roomID)"><i class="fas fa-times-circle bg-danger"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

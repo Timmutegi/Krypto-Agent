@@ -1,0 +1,86 @@
+.navbar {
+    background-color: transparent !important;
+    margin: 20px 100px 0px 20px;
+}
+
+.navbar-brand {
+    color: black;
+}
+
+.col-md-4 .card-body {
+    text-align: right;
+}
+
+.col-md-4 .card-title {
+    font-size: 14px;
+}
+
+hr {
+    margin-top: 25px;
+}
+
+#topcard {
+    margin-top: -170px;
+    margin-bottom: -10px;
+    z-index: 10;
+    background-color: #E53573;
+    color: white;
+    height: 90px;
+    width: 90px;
+    text-align: center;
+    margin-left: -10px;
+}
+
+.social {
+    text-align: center;
+}
+
+#icon {
+    padding-top: 20%;
+}
+
+.row {
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.mb-2 {
+    height: 150px;
+}
+
+#verify {
+    color: grey;
+    padding-top: 40px;
+    padding-left: 20px;
+}
+
+.container {
+    margin-bottom: 100px;
+}
+
+.w-100 .card-title {
+    padding-left: 70px;
+}
+
+.w-100 #topcard {
+    margin-top: -70px;
+    margin-bottom: 10px;
+    z-index: 10;
+    background-color: #E53573;
+    color: white;
+    text-align: center;
+    margin-left: -10px;
+    height: 70px;
+    width: 70px;
+}
+
+table i {
+    padding: 5px;
+    color: white;
+    margin: 3px;
+}
+
+#datatable {
+    margin: 80px 40px 50px 40px;
+}

@@ -1,0 +1,165 @@
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Dashboard</a>
+    </nav>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Landlords</h5>
+                    <p class="card-text">110,340,245</p>
+                    <hr>
+                    <p class="card-text text-left"><small class="text-muted">November Rent</small></p>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i id="icon" class="fas fa-home fa-2x"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Tenants</h5>
+                    <p class="card-text">110,340,245</p>
+                    <hr>
+                    <p class="card-text text-left"><small class="text-muted">November Rent</small></p>
+                    <div class="overlay">
+                        <div class="card bg-success" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i id="icon" class="fas fa-money-check-alt fa-2x"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Rooms</h5>
+                    <p class="card-text">110,340,245</p>
+                    <hr>
+                    <p class="card-text text-left"><small class="text-muted">November Rent</small></p>
+                    <div class="overlay">
+                        <div class="card bg-info" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i id="icon" class="fas fa-bell fa-2x"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Mpesa</h5>
+                    <p class="card-text">110,340,245</p>
+                    <hr>
+                    <p class="card-text text-left"><small class="text-muted">November Rent</small></p>
+                    <div class="overlay">
+                        <div class="card bg-info" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i id="icon" class="fas fa-phone-alt fa-2x"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Empty Rooms</h5>
+                    <p class="card-text">110,340,245</p>
+                    <hr>
+                    <p class="card-text text-left"><small class="text-muted">November Rent</small></p>
+                    <div class="overlay">
+                        <div class="card bg-success" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i id="icon" class="fas fa-home fa-2x"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Month Revenue</h5>
+                    <p class="card-text">110,340,245</p>
+                    <hr>
+                    <p class="card-text text-left"><small class="text-muted">November Rent</small></p>
+                    <div class="overlay">
+                        <div class="card bg-primary" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i id="icon" class="fas fa-money-check-alt fa-2x"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="verify">
+        <h5>Verify Mpesa Transactions</h5>
+    </div>
+    <div id="datatable" class="row">
+        <div class="card w-100">
+            <div class="card-body">
+                <h6 class="card-title">Mpesa Transactions</h6>
+                <div class="overlay">
+                    <div class="card" id="topcard">
+                        <div class="card-body">
+                            <div class="social">
+                                <span><i class="fas fa-clipboard fa-2x"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Transaction ID</th>
+                            <th>Phone</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Andrew Mike</td>
+                            <td>HHSDHYF3242</td>
+                            <td>0705035022</td>
+                            <td>99,225</td>
+                            <td><span><i class="fas fa-user bg-info"></i></span><span><i
+                                        class="fas fa-edit bg-success"></i></span><i class="fas fa-times-circle bg-danger"></i><span></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Caretaker</a>
+    </nav>
+
+    <div class="row mb-8">
+        <div class="col-md-8">
+            <div class="card" id="leftcard">
+                <div class="card-body">
+                    <h5 *ngIf="toggle" class="card-title">Create New Caretaker</h5>
+                    <h5 *ngIf="!toggle" class="card-title">Update Caretaker</h5>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-user"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="message != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <form [formGroup]="caretakerForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" formControlName="fullname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullname.errors}" placeholder="Fullname">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Fullname is required</div>
+                                </div>
+                            </div>
+                            <div *ngIf="toggle" class="form-group col-md-6">
+                                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors}" placeholder="Username">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Username is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div *ngIf="toggle" class="form-group col-md-6">
+                                <input type="number" formControlName="national" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.national.errors}" placeholder="National ID">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>National ID is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" formControlName="phoneNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors}" placeholder="Phone Number">
+                                <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
+                                    <div *ngIf="f.phoneNumber.errors.required">Phone Number is required</div>
+                                    <div *ngIf="f.phoneNumber.errors.pattern">Enter a valid Phone Nunber</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <select formControlName="branch" class="form-control" [ngClass]="{'is-invalid': submitted && f.branch.errors }">
+                                    <option value="" selected>Choose Branch</option>
+                                    <option *ngFor="let branch of branches" value="{{branch.branchID}}">{{branch.branchName}}</option>
+                                </select>
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Branch is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="toggle" class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="passportPhoto">Passport Photo</label>
+                                <input type="file" formControlName="photo" class="form-control" (change)="choosePhoto(photo.files)" #photo id="photo" [ngClass]="{'is-invalid': submitted && f.photo.errors }" placeholder="Profile Picture">
+                                <div *ngIf="submitted && f.photo.errors" class="invalid-feedback">
+                                    <div>Profile Picture is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button *ngIf="toggle" type="submit" (click)="onSubmit()" class="btn text-white" id="btn1">SAVE</button>
+                        <button *ngIf="!toggle" type="submit" (click)="updateCaretaker()" class="btn text-white" id="btn1">UPDATE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" id="right-card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">LOGGED IN AS</h6>
+                    <h5 class="card-title">Robert Kanyoro</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                    </p>
+                    <button type="submit" (click)="onSubmit()" class="btn text-white" id="btn2">EDIT PROFILE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{photoMessage}}
+                    <img src="{{avatarBlobUrl}}">
+                    <input *ngIf="showInput" type="file" #updatePhoto class="form-control" (change)="choosePhoto(updatePhoto.files)" id="updatePhoto" placeholder="Profile Picture">
+                    <button *ngIf="showInput" type="button" (click)="updateImage(updatedimage)" #updatedimage value={{updateNationalID}} class="btn btn-success btn-sm">SAVE</button>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="!showButton" type="button" class="btn btn-info btn-sm" (click)="chooseImage()">UPDATE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="datatable" class="row">
+        <div class="card w-100">
+            <div class="card-body">
+                <h6 class="card-title">Caretakers</h6>
+                <div class="overlay">
+                    <div class="card" id="topcard">
+                        <div class="card-body">
+                            <div class="social">
+                                <span><i class="fas fa-clipboard fa-lg"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="deleteMessage != null" class="d-flex justify-content-center">
+                    <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                        {{message}}
+                        <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>National ID</th>
+                            <th>Phone Number</th>
+                            <th>Branch</th>
+                            <th>Photo</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let caretaker of caretakers">
+                            <td>{{caretaker.caretakerID}}</td>
+                            <td>{{caretaker.caretakerName}}</td>
+                            <td>{{caretaker.username}}</td>
+                            <td>{{caretaker.caretakerNationalID}}</td>
+                            <td>{{caretaker.caretakerPhoneNumber}}</td>
+                            <td>{{caretaker.branch.branchName}}</td>
+                            <td><button type="button" class="btn btn-info btn-sm" (click)="displayImage(caretaker.caretakerID, caretaker.caretakerNationalID)" data-toggle="modal" data-target="#exampleModal">View</button></td>
+                            <td><a (click)="onUpdate(caretaker.caretakerID)"><i class="fas fa-edit bg-success text-white"></i></a><a (click)="deleteCaretaker(caretaker.caretakerID)"><i class="fas fa-trash bg-danger text-white"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

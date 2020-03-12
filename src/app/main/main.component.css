@@ -1,0 +1,9 @@
+#column1 {
+    width: 20%;
+}
+
+#column2 {
+    width: 80%;
+    background-color: #eee;
+    min-height: 100vh;
+}

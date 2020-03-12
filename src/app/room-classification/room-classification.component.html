@@ -1,0 +1,247 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Room Classification</a>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card" id="leftcard">
+                <div class="card-body">
+                    <h5 *ngIf="!toggle" class="card-title">New Room</h5>
+                    <h5 *ngIf="toggle" class="card-title">Update Room</h5>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-user"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="message != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <form [formGroup]="roomForm">
+                        <div class="form-row">
+                            <div *ngIf="!toggle" class="form-group col-md-6">
+                                <select formControlName="apartment" class="form-control" [ngClass]="{'is-invalid': submitted && f.apartment.errors }">
+                                    <option value="" selected>Choose Apartment</option>
+                                    <option *ngFor="let apartment of apartments" value="{{apartment.apartmentID}}">
+                                        {{apartment.apartmentName}}</option>
+                                </select>
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Apartment is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" formControlName="roomRent" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomRent.errors }" placeholder="Room Rent">
+                                <div *ngIf="submitted && f.roomRent.errors" class="invalid-feedback">
+                                    <div *ngIf="f.roomRent.errors.required">Room rent is required</div>
+                                    <div *ngIf="f.roomRent.errors.pattern">Enter a valid room floor</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!toggle" class="form-row mb-4">
+                            <div class="form-group col-md-6">
+                                <select formControlName="roomType" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomType.errors }">
+                                    <option value="" selected>Choose Type</option>
+                                    <option value="single">Single</option>
+                                    <option value="double">Double</option>
+                                    <option value="bedsitter">Bedsitter</option>
+                                    <option value="1bed">1 Bedroom</option>
+                                    <option value="2bed">2 Bedroom</option>
+                                    <option value="3bed">3 Bedroom</option>
+                                    <option value="4bed">4 Bedroom</option>
+                                    <option value="5bed">5 Bedroom</option>
+                                    <option value="6bed">6 Bedroom</option>
+                                    <option value="7bed">7 Bedroom</option>
+                                    <option value="8bed">8 Bedroom</option>
+                                    <option value="9bed">9 Bedroom</option>
+                                    <option value="10bed">10 Bedroom</option>
+                                </select>
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Room Type is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <select formControlName="roomClassification" class="form-control" [ngClass]="{'is-invalid': submitted && f.roomClassification.errors }">
+                                    <option value="" selected>Choose Classification</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                </select>
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Room Classification is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!toggle" class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="roomPhoto">Room Photo 1</label>
+                                <input type="file" formControlName="photo1" class="form-control photo" (change)="choosePhoto1(photo1.files)" #photo1 id="photo1" [ngClass]="{'is-invalid': submitted && f.photo1.errors }" placeholder="Room Photo">
+                                <div *ngIf="submitted && f.photo1.errors" class="invalid-feedback">
+                                    <div>Room photo is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="roomPhoto">Room Photo 2</label>
+                                <input type="file" formControlName="photo2" class="form-control" (change)="choosePhoto2(photo2.files)" #photo2 id="photo2" [ngClass]="{'is-invalid': submitted && f.photo2.errors }" placeholder="Room Photo">
+                                <div *ngIf="submitted && f.photo2.errors" class="invalid-feedback">
+                                    <div>Room photo is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!toggle" class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="roomPhoto">Room Photo 3</label>
+                                <input type="file" formControlName="photo3" class="form-control" (change)="choosePhoto3(photo3.files)" #photo3 id="photo3" placeholder="Room Photo">
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="roomPhoto">Room Photo 4</label>
+                                <input type="file" formControlName="photo4" class="form-control" (change)="choosePhoto4(photo4.files)" #photo4 id="photo4" placeholder="Room Photo">
+                            </div>
+                        </div>
+
+                        <button *ngIf="!toggle" type="submit" (click)="onSubmit()" class="btn text-white" id="btn1">SAVE</button>
+                        <button *ngIf="toggle" type="submit" (click)="updateRoomClassification()" class="btn text-white" id="btn1">UPDATE</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" id="right-card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">LOGGED IN AS</h6>
+                    <h5 class="card-title">Robert Kanyoro</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                    </p>
+                    <button type="submit" class="btn text-white" id="btn2">EDIT PROFILE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <button *ngIf="choose === false" type="button" class="btn btn-info btn-sm" (click)="updatePhotos()">UPDATE</button>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                {{photoMessage}}
+                                <img src="{{roomPhoto1}}">
+                                <input *ngIf="choose === true" type="file" #updatePhoto1 class="form-control" (change)="choosePhoto1(updatePhoto1.files)" id="updatePhoto1" placeholder="Update photo 1">
+                                <button *ngIf="choose === true" type="button" class="btn btn-info btn-sm" (click)="savePhoto1()">SAVE</button>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="{{roomPhoto2}}">
+                                <input *ngIf="choose === true" type="file" #updatePhoto2 class="form-control" (change)="choosePhoto2(updatePhoto2.files)" id="updatePhoto2" placeholder="Update photo 2">
+                                <button *ngIf="choose === true" type="button" class="btn btn-info btn-sm" (click)="updatePhotos()">SAVE</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="url === true" class="col-md-6">
+                                <img src="{{roomPhoto3}}">
+                                <button type="button" class="btn btn-info btn-sm" (click)="updatePhotos()">UPDATE</button>
+                            </div>
+                            <div *ngIf=" url === true" class="col-md-6">
+                                <img src="{{roomPhoto4}}">
+                                <button type="button" class="btn btn-info btn-sm" (click)="updatePhotos()">UPDATE</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <input *ngIf="showInput" type="file" #updatePhoto class="form-control" (change)="choosePhoto(updatePhoto.files)" id="updatePhoto" placeholder="Profile Picture"> -->
+                    <!-- <button *ngIf="showInput" type="button" (click)="updateImage(updatedimage)" #updatedimage value={{updateNationalID}} class="btn btn-success btn-sm">SAVE</button> -->
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-info btn-sm" (click)="chooseImage()">UPDATE</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h5 class="card-title">Room Classification</h5>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-clipboard fa-lg"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <label for="apartments">Select Apartment</label>
+                                <select (change)="showApartmentRooms($event.target.value)" class="form-control">
+                                    <option value="" selected>Choose Apartment</option>
+                                    <option *ngFor="let apartment of apartments" value="{{apartment.apartmentID}}">
+                                        {{apartment.apartmentName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="deleteMessage != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>Apartment</th>
+                                <th>Type</th>
+                                <th>Rent</th>
+                                <th>Classification</th>
+                                <th>View Photos</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let room of apartmentRooms">
+                                <td>{{room.roomApartment}}</td>
+                                <td>{{room.roomType}}</td>
+                                <td>{{room.roomRent}}</td>
+                                <td>{{room.roomClass}}</td>
+                                <td><button type="button" class="btn btn-info btn-sm" (click)="viewPhotos(room.roomID, room.roomPhotoOne, room.roomPhotoTwo, room.roomPhotoThree, room.roomPhotoFour)" data-toggle="modal" data-target="#exampleModal">View</button></td>
+                                <td><a (click)="onUpdate(room.roomID)"><i class="fas fa-edit bg-success"></i></a><a (click)="deleteRoomClassification(room.roomID)"><i
+                                            class="fas fa-times-circle bg-danger"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

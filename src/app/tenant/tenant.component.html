@@ -1,0 +1,208 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" routerLink="/tenant">Tenant</a>
+    </nav>
+
+    <div class="row toggler">
+        <button *ngIf="checked === true" type="submit" (click)="activeTenants()" class="btn text-white" id="btn3">View Deactivated Tenants</button>
+        <button *ngIf="checked === false" type="submit" (click)="activeTenants()" class="btn text-white" id="btn3">View Active Tenants</button>
+    </div>
+
+    <div *ngIf="checked === true">
+        <div class="row mb-8">
+            <div class="col-md-8">
+                <div class="card" id="leftcard">
+                    <div class="card-body">
+                        <h5 *ngIf="!toggle" class="card-title">New Tenant</h5>
+                        <h5 *ngIf="toggle" class="card-title">UpdateTenant</h5>
+                        <div class="overlay">
+                            <div class="card" id="topcard">
+                                <div class="card-body">
+                                    <div class="social">
+                                        <span><i class="fas fa-user"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="message != null" class="d-flex justify-content-center">
+                            <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                                {{message}}
+                                <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <form [formGroup]="tenantForm">
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <input type="text" formControlName="username" class="form-control" placeholder="Username">
+
+                                </div>
+                                <div *ngIf="toggle" class="form-group col-md-4">
+                                    <input type="text" formControlName="tenantName" class="form-control" [ngClass]="{'is-invalid': submitted && f.tenantName.errors }" placeholder="Tenant Name">
+                                    <div *ngIf="submitted" class="invalid-feedback">
+                                        <div>Tenant name is required</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="toggle" class="form-group col-md-4">
+                                    <input type="number" formControlName="phone" class="form-control" [ngClass]="{'is-invalid': submitted && f.phone.errors }" placeholder="Phone Number">
+                                    <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                                        <div *ngIf="f.phone.errors.pattern">Enter a valid phone number</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div *ngIf="toggle" class="form-group col-md-4">
+                                    <input type="text" formControlName="national" class="form-control" [ngClass]="{'is-invalid': submitted && f.national.errors }" placeholder="National ID">
+                                    <div *ngIf="submitted && f.national.errors" class="invalid-feedback">
+                                        <div *ngIf="f.national.errors.required">National Id number is required</div>
+                                        <div *ngIf="f.national.errors.pattern">Enter a valid ID number</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="toggle" class="form-group col-md-4">
+                                    <input type="text" formControlName="room" class="form-control" placeholder="Room">
+
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <input type="text" formControlName="apartment" class="form-control" placeholder="Apartment">
+
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="photo">Profile Picture</label>
+                                    <input type="file" formControlName="photo" #photo class="form-control" (change)="choosePhoto(photo.files)" id="photo" placeholder="Profile Picture">
+
+                                </div>
+                            </div>
+                            <button type="submit" class="btn text-white" (click)="onSubmit()" id="btn1">SAVE</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" id="right-card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">LOGGED IN AS</h6>
+                        <h5 class="card-title">Robert Kanyoro</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                        </p>
+                        <button type="submit" class="btn text-white" (click)="test()" id="btn2">EDIT PROFILE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">View Photo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="{{avatarBlobUrl}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="datatable" class="row">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h6 class="card-title">Active Tenants</h6>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-clipboard fa-lg"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table datatable class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Tenant Name</th>
+                                <th>Phone Number</th>
+                                <th>National ID</th>
+                                <th>Room</th>
+                                <th>Apartment</th>
+                                <th>Picture</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let tenant of tenants">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><button type="button" class="btn btn-info btn-sm" (click)="displayImage(tenant.tenantID)" data-toggle="modal" data-target="#exampleModal">View</button></td>
+                                <td><a (click)="onUpdate()"><i class="fas fa-edit bg-success"></i></a><a (click)="deleteTenant()"><i class="fas fa-times-circle bg-danger"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div *ngIf="checked === false">
+        <div id="datatable" class="row">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h6 class="card-title">Deactivated Tenants</h6>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-clipboard fa-lg"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table datatable class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Tenant Name</th>
+                                <th>Phone Number</th>
+                                <th>National ID</th>
+                                <th>Room</th>
+                                <th>Apartment</th>
+                                <th>Photo</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let tenant of tenants">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><button type="button" class="btn btn-info btn-sm" (click)="displayImage(tenant.tenantID)" data-toggle="modal" data-target="#exampleModal">View</button></td>
+                                <td><a (click)="onUpdate(tenant.tenantID)"><i class="fas fa-edit bg-success"></i></a><a (click)="deleteTenant(tenant.tenantID)"><i class="fas fa-times-circle bg-danger"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

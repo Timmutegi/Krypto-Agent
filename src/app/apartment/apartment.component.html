@@ -1,0 +1,194 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Apartment</a>
+    </nav>
+
+    <div class="row mb-8">
+        <div class="col-md-8">
+            <div class="card" id="leftcard">
+                <div class="card-body">
+                    <h5 *ngIf="toggle" class="card-title">Create New Apartment</h5>
+                    <h5 *ngIf="!toggle" class="card-title">Update apartment</h5>
+                    <div class="overlay">
+                        <div class="card" id="topcard">
+                            <div class="card-body">
+                                <div class="social">
+                                    <span><i class="fas fa-user"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="message != null" class="d-flex justify-content-center">
+                        <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <form [formGroup]="apartmentForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" formControlName="apartmentName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.apartmentName.errors}" placeholder="Apartment Name">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Apartment name is required</div>
+                                </div>
+                            </div>
+                            <div *ngIf="toggle" class="form-group col-md-6">
+                                <input type="text" formControlName="apartmentCounty" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.apartmentCounty.errors}" placeholder="Apartment County">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>apartment County is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div *ngIf="toggle" class="form-group col-md-6">
+                                <input type="text" formControlName="apartmentEstate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.apartmentEstate.errors}" placeholder="Apartment Estate">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Apartment Estate is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" formControlName="apartmentStudentType" class="form-control" placeholder="Student Type">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div *ngIf="toggle" class="form-group col-md-4">
+                                <select formControlName="branch" class="form-control">
+                                    <option value="" selected>Choose Branch</option>
+                                    <option *ngFor="let branch of branches" value="{{branch.branchID}}">{{branch.branchName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select formControlName="branch" class="form-control">
+                                    <option value="" selected>Choose Caretaker</option>
+                                    <option *ngFor="let caretaker of caretakers" value="{{caretaker.caretakerID}}">{{caretaker.caretakerName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select formControlName="landlord" class="form-control">
+                                    <option value="" selected>Choose Landlord</option>
+                                    <option *ngFor="let landlord of landlords" value="{{landlord.landlordID}}">{{landlord.landlordName}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div *ngIf="toggle" class="form-group col-md-4">
+                                <input type="number" formControlName="apartmentLatitude" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.apartmentLatitude.errors}" placeholder="Latitude">
+                                <div *ngIf="submitted && f.apartmentLatitude.errors" class="invalid-feedback">
+                                    <div>Input valid latitude</div>
+                                </div>
+                            </div>
+                            <div *ngIf="toggle" class="form-group col-md-4">
+                                <input type="number" formControlName="apartmentLongitude" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.apartmentLongitude.errors}" placeholder="Longitude">
+                                <div *ngIf="submitted && f.apartmentLongitude.errors" class="invalid-feedback">
+                                    <div>Input valid longitude</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="toggle" class="form-row">
+                            <div *ngIf="toggle" class="form-group col-md-4">
+                                <label for="passportPhoto">Apartment Picture</label>
+                                <input type="file" formControlName="apartmentAvatar" class="form-control" (change)="choosePhoto(photo.files)" #photo id="photo" [ngClass]="{'is-invalid': submitted && f.apartmentAvatar.errors }" placeholder="Apartment Photo">
+                                <div *ngIf="submitted" class="invalid-feedback">
+                                    <div>Apartment photo is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button *ngIf="toggle" type="submit" (click)="onSubmit()" class="btn text-white" id="btn1">SAVE</button>
+                        <button *ngIf="!toggle" type="submit" (click)="updateApartment()" class="btn text-white" id="btn1">UPDATE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" id="right-card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">LOGGED IN AS</h6>
+                    <h5 class="card-title">Robert Kanyoro</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                    </p>
+                    <button type="submit" (click)="onSubmit()" class="btn text-white" id="btn2">EDIT PROFILE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src="{{avatarBlobUrl}}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="datatable" class="row">
+        <div class="card w-100">
+            <div class="card-body">
+                <h6 class="card-title">Apartments</h6>
+                <div class="overlay">
+                    <div class="card" id="topcard">
+                        <div class="card-body">
+                            <div class="social">
+                                <span><i class="fas fa-clipboard fa-lg"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="deleteMessage != null" class="d-flex justify-content-center">
+                    <div class="col-md-8 alert alert-info alert-dismissible fade show" role="alert">
+                        {{deleteMessage}}
+                        <button type="button" class="close" (click)="dismissAlert()" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Landlord</th>
+                            <th>Caretaker</th>
+                            <th>County</th>
+                            <th>Estate</th>
+                            <th>Branch</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <!-- <th>Student Type</th> -->
+                            <th>Picture</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let apartment of apartments">
+                            <td>{{apartment.apartmentName}}</td>
+                            <td>{{apartment.landlord}}</td>
+                            <td>{{apartment.caretaker}}</td>
+                            <td>{{apartment.apartmentCounty}}</td>
+                            <td>{{apartment.apartmentEstate}}</td>
+                            <td>{{apartment.branch.branchName}}</td>
+                            <td>{{apartment.apartmentLatitude}}</td>
+                            <td>{{apartment.apartmentLongitude}}</td>
+                            <!-- <td>{{apartment.apartmentStudentType}}</td> -->
+                            <td><button type="button" class="btn btn-info btn-sm" (click)="displayImage(apartment.apartmentAvatar)" data-toggle="modal" data-target="#exampleModal">View</button></td>
+                            <td><a (click)="onUpdate(apartment.apartmentID)"><i class="fas fa-edit bg-success"></i></a><a (click)="deleteApartment(apartment.apartmentID)"><i class="fas fa-times-circle bg-danger"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
